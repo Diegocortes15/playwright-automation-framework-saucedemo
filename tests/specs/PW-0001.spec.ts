@@ -76,3 +76,15 @@ Tags: ${testDataTestCase_6["tags"]}`, async ({page}) => {
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
 });
+
+const testDataTestCase_7 = JSON.parse(readFileSync(`./tests/data/${storyParentId}/PW-0009.json`, "utf-8"));
+test(`Test case: ${testDataTestCase_7["testCase"]} |
+Description: ${testDataTestCase_7["testDescription"]} |
+Tags: ${testDataTestCase_7["tags"]}`, async ({page}) => {
+  const data = await testDataTestCase_7;
+  const loginPageMethods = new LoginPageMethods(page, test.info());
+  const supportFactory = new SupportFactory(page, test.info());
+  await supportFactory.addAnnotations(data);
+  await loginPageMethods.goto();
+  await loginPageMethods.login(data.loginPage);
+});
