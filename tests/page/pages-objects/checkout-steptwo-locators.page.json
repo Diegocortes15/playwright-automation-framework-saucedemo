@@ -1,0 +1,12 @@
+{
+  "locators": {
+    "pageTitle": {
+      "selector": ".title",
+      "description": "Page title"
+    },
+    "buttonFinish": {
+      "selector": "[data-test='finish']",
+      "description": "Input first name"
+    }
+  }
+}

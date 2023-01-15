@@ -1,0 +1,10 @@
+{
+  "testCase": "PW-0009",
+  "testSummary": "Verify empty user with empty password cannot login",
+  "testDescription": "Validate that an empty user with empty password cannot login",
+  "tags": "@regression @sprint1 @pw-0001 @pw-0009",
+  "loginPage": {
+    "username": "",
+    "password": ""
+  }
+}

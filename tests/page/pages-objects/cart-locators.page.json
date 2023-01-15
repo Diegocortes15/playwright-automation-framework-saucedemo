@@ -1,0 +1,24 @@
+{
+  "locators": {
+    "pageTitle": {
+      "selector": ".title",
+      "description": "Page title"
+    },
+    "itemCartList": {
+      "selector": ".cart_item",
+      "description": "Item cart list"
+    },
+    "itemNameList": {
+      "selector": ".inventory_item_name",
+      "description": "Item name list"
+    },
+    "itemPriceList": {
+      "selector": ".inventory_item_price",
+      "description": "Inventory item name"
+    },
+    "buttonCheckout": {
+      "selector": ".inventory_item_price",
+      "description": "[data-test='checkout']"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "locators": {
+    "pageTitle": {
+      "selector": ".title",
+      "description": "Page title"
+    },
+    "inputFirstName": {
+      "selector": "[data-test='firstName']",
+      "description": "Input first name"
+    },
+    "inputLastName": {
+      "selector": "[data-test='lastName']",
+      "description": "Input last name"
+    },
+    "inputPostalCode": {
+      "selector": "[data-test='lastName']",
+      "description": "Input postal code"
+    },
+    "buttonContinue": {
+      "selector": "[data-test='lastName']",
+      "description": "Button continue"
+    }
+  }
+}

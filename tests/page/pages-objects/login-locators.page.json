@@ -1,0 +1,20 @@
+{
+  "locators": {
+    "inputUser": {
+      "selector": "#user-name[type=text]",
+      "description": "Input user"
+    },
+    "inputPassword": {
+      "selector": "#password[type=password]",
+      "description": "Input password"
+    },
+    "buttonSubmit": {
+      "selector": "#login-button[type=submit]",
+      "description": "Button submit"
+    },
+    "errorMessage": {
+      "selector": ".error-message-container.error",
+      "description": "Button continue"
+    }
+  }
+}

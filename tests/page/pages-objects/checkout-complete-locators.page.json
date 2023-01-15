@@ -1,0 +1,12 @@
+{
+  "locators": {
+    "pageTitle": {
+      "selector": ".title",
+      "description": "Page title"
+    },
+    "completeHeader": {
+      "selector": ".complete-header",
+      "description": "Complete header"
+    }
+  }
+}

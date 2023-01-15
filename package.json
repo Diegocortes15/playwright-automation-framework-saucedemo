@@ -1,0 +1,15 @@
+{
+  "name": "playwright-framework",
+  "version": "1.0.0",
+  "description": "Playwright framework - case study",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Diego Alejandro Cortes Roa",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.29.2"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
+}

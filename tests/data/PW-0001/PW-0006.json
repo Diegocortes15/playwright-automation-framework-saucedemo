@@ -1,0 +1,10 @@
+{
+  "testCase": "PW-0006",
+  "testSummary": "Verify 'locked_out_user' cannot login",
+  "testDescription": "Validate the 'locked_out_user' cannot login",
+  "tags": "@regression @sprint1 @pw-0001 @pw-0006",
+  "loginPage": {
+    "username": "locked_out_user",
+    "password": "secret_sauce"
+  }
+}
