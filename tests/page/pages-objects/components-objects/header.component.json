@@ -1,0 +1,24 @@
+{
+  "locators": {
+    "primaryHeader": {
+      "selector": ".primary_header",
+      "description": "Primary header"
+    },
+    "burgerButton": {
+      "selector": "#react-burger-menu-btn",
+      "description": "Burger button"
+    },
+    "navList": {
+      "selector": ".bm-item-list",
+      "description": "Navigation List"
+    },
+    "logoutButton": {
+      "selector": "#logout_sidebar_link",
+      "description": "Logout button"
+    },
+    "shoppingCartButton": {
+      "selector": ".shopping_cart_link",
+      "description": "Shopping cart button"
+    }
+  }
+}
