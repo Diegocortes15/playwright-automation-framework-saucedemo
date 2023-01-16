@@ -37,7 +37,7 @@ export class ProductsPageMethods {
     await this._playwrightFactory.selectByVisibleText(this._pageName, "dropdownProductSort", sortProducts);
   }
 
-  public async sortPricesNotSorted(): Promise<string[]> {
+  public async sortPricesNotSortedLowToHigh(): Promise<string[]> {
     const orderedPrices = (await this.getPrices()).flat().sort((a: string, b: string) => +a - +b);
     return orderedPrices;
   }
