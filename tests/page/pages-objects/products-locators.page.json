@@ -1,0 +1,28 @@
+{
+  "locators": {
+    "titlePage": {
+      "selector": ".title",
+      "description": "Page title"
+    },
+    "dropdownProductSort": {
+      "selector": "[data-test='product_sort_container']",
+      "description": "Dropdown product sort"
+    },
+    "itemList": {
+      "selector": ".inventory_item",
+      "description": "Item list"
+    },
+    "itemNameList": {
+      "selector": ".inventory_item_name",
+      "description": "Item name list"
+    },
+    "itemPriceList": {
+      "selector": ".inventory_item_price",
+      "description": "Item price list"
+    },
+    "itemBtnsList": {
+      "selector": "button.btn_inventory",
+      "description": "Item button list"
+    }
+  }
+}

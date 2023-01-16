@@ -1,0 +1,10 @@
+{
+  "testCase": "PW-0011",
+  "testSummary": "Verify 'problem_user' can logout",
+  "testDescription": "Validate the 'problem_user' user can logout",
+  "tags": "@regression @sprint1 @pw-0002 @pw-0011",
+  "loginPage": {
+    "username": "problem_user",
+    "password": "secret_sauce"
+  }
+}

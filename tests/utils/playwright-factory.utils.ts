@@ -15,13 +15,13 @@ export class PlaywrightFactory {
     this._testInfo = testInfo;
   }
 
-  async getElement(filePath: string, elementName: string): Promise<any> {
+  public async getElement(filePath: string, elementName: string): Promise<any> {
     const rawdata: any = readFileSync(`./tests/page/pages-objects/${filePath}.json`);
     const data: any = JSON.parse(rawdata);
     return data.locators[elementName];
   }
 
-  async click(filePath: string, elementName: string): Promise<void> {
+  public async click(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is clicked`, async (): Promise<void> => {
       await this._page.locator(element.selector).scrollIntoViewIfNeeded();
@@ -33,7 +33,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async clickAllIfExists(filePath: string, elementName: string): Promise<void> {
+  public async clickAllIfExists(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is clicked`, async (): Promise<void> => {
       let booleanFlag: number = await this._page.locator(element.selector).count();
@@ -48,7 +48,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async selectRadio(filePath: string, elementName: string, strValue: string): Promise<void> {
+  public async selectRadio(filePath: string, elementName: string, strValue: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     const elementToClick: string = await element.selector.replace("${value}", strValue);
     await test.step(`🐾 "${element.description}" is selected with "${strValue}"`, async (): Promise<void> => {
@@ -60,7 +60,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async sendKeys(filePath: string, elementName: string, strValue: string): Promise<void> {
+  public async sendKeys(filePath: string, elementName: string, strValue: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is entered with "${strValue}"`, async (): Promise<void> => {
       await this._page.locator(element.selector).scrollIntoViewIfNeeded();
@@ -72,9 +72,9 @@ export class PlaywrightFactory {
     });
   }
 
-  async sendTypedKeys(filePath: string, elementName: string, strValue: string): Promise<void>;
-  async sendTypedKeys(filePath: string, elementName: string, strValue: string, setback: number): Promise<void>;
-  async sendTypedKeys(filePath: string, elementName: string, strValue: string, setback?: number): Promise<void> {
+  public async sendTypedKeys(filePath: string, elementName: string, strValue: string): Promise<void>;
+  public async sendTypedKeys(filePath: string, elementName: string, strValue: string, setback: number): Promise<void>;
+  public async sendTypedKeys(filePath: string, elementName: string, strValue: string, setback?: number): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is typed with "${strValue}"`, async (): Promise<void> => {
       await this._page.locator(element.selector).scrollIntoViewIfNeeded();
@@ -90,10 +90,7 @@ export class PlaywrightFactory {
     });
   }
 
-/**
- * @param filePath dsadasd
- */
-  async pressKey(filePath: string, elementName: string, strValue: string): Promise<void> {
+  public async pressKey(filePath: string, elementName: string, strValue: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is pressed with "${strValue}"`, async (): Promise<void> => {
       await this._page.locator(element.selector).scrollIntoViewIfNeeded();
@@ -105,10 +102,10 @@ export class PlaywrightFactory {
     });
   }
 
-  async selectByVisibleText(filePath: string, elementName: string, strValue: string): Promise<void> {
+  public async selectByVisibleText(filePath: string, elementName: string, strValue: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is selected with option "${strValue}"`, async (): Promise<void> => {
-      await this._page.selectOption(element, {label: strValue});
+      await this._page.selectOption(element.selector, {label: strValue});
       await this._testInfo.attach(`🐾 "${element.description}" is selected with option "${strValue}"`, {
         body: `🐾 "${element.description}" is selected with option "${strValue}"`,
         contentType: "text/plain",
@@ -116,10 +113,10 @@ export class PlaywrightFactory {
     });
   }
 
-  async selectByValue(filePath: string, elementName: string, strValue: string): Promise<void> {
+  public async selectByValue(filePath: string, elementName: string, strValue: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is selected with option "${strValue}"`, async (): Promise<void> => {
-      await this._page.selectOption(element, strValue);
+      await this._page.selectOption(element.selector, strValue);
       await this._testInfo.attach(`🐾 "${element.description}" is selected with option "${strValue}"`, {
         body: `🐾 "${element.description}" is selected with option "${strValue}"`,
         contentType: "text/plain",
@@ -127,7 +124,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async clearText(filePath: string, elementName: string): Promise<void> {
+  public async clearText(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is erased`, async (): Promise<void> => {
       await this.click(filePath, elementName);
@@ -137,15 +134,15 @@ export class PlaywrightFactory {
     });
   }
 
-  async waitForDomLoad() {
+  public async waitForDomLoad() {
     await this._page.waitForLoadState("domcontentloaded");
   }
 
-  async waitForNetworkIdle() {
+  public async waitForNetworkIdle() {
     await this._page.waitForLoadState("networkidle");
   }
 
-  async embedScreenshot(description: string): Promise<void> {
+  public async embedScreenshot(description: string): Promise<void> {
     const screenshot: Buffer = await this._page.screenshot({fullPage: true});
     await this._testInfo.attach(description, {
       body: screenshot,
@@ -153,7 +150,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifyHidden(filePath: string, elementName: string): Promise<void> {
+  public async verifyHidden(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" is Hidden`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isHidden(element.selector);
@@ -174,7 +171,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifyVisible(filePath: string, elementName: string): Promise<void> {
+  public async verifyVisible(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" is Visible`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isVisible(element.selector);
@@ -195,7 +192,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifyValue(filePath: string, elementName: string, strExpectedValue: string): Promise<void> {
+  public async verifyValue(filePath: string, elementName: string, strExpectedValue: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" value is displayed as expected`, async (): Promise<void> => {
       const actualValue: string = await this._page.inputValue(element.selector);
@@ -226,7 +223,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifyDisable(filePath: string, elementName: string): Promise<void> {
+  public async verifyDisable(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" is Disable`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isDisabled(element.selector);
@@ -247,7 +244,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifyEnabled(filePath: string, elementName: string): Promise<void> {
+  public async verifyEnabled(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" is Enabled`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isEnabled(element.selector);
@@ -268,7 +265,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifySnapshot(filePath: string, elementName: string, screenshotPath: string): Promise<void> {
+  public async verifySnapshot(filePath: string, elementName: string, screenshotPath: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await expect.soft(this._page.locator(element.selector)).toHaveScreenshot(screenshotPath);
     const screenshot = await this._page.locator(element.selector).screenshot();
@@ -278,7 +275,7 @@ export class PlaywrightFactory {
     });
   }
 
-  async verifyChecked(filePath: string, elementName: string): Promise<void> {
+  public async verifyChecked(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" is Checked`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isEnabled(element.selector);
@@ -296,6 +293,28 @@ export class PlaywrightFactory {
         });
       }
       await expect.soft(this._page.locator(element.selector)).toBeEnabled();
+    });
+  }
+
+  public async verifyURL(url: string) {
+    await test.step(`🧪 Verifying that the user is in the url is "${url}"`, async (): Promise<void> => {
+      await expect.soft(this._page).toHaveURL(url);
+    });
+  }
+
+  public async getAllTextContents(filePath: string, elementName: string): Promise<string[]> {
+    const element: any = await this.getElement(filePath, elementName);
+    const elementTextContent = await test.step(`🐾 "${element.description}" text is obtained`, async (): Promise<
+      string[]
+    > => {
+      return this._page.locator(element.selector).allTextContents();
+    });
+    return elementTextContent;
+  }
+
+  public async verifyCompareValues(actual: any, expected: any): Promise<void> {
+    await test.step(`🧪 Verifying that ${actual} match with ${expected}`, async (): Promise<void> => {
+      expect.soft(actual).toEqual(expected);
     });
   }
 }

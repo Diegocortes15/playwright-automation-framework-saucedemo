@@ -19,7 +19,7 @@ export class CartPageMethods {
     this._pageName = "cart-locators.page";
   }
 
-  async clickCheckoutButton(): Promise<void> {
+  public async clickCheckoutButton(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonCheckout");
   }
 }
