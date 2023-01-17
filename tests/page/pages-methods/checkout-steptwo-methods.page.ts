@@ -19,7 +19,7 @@ export class CheckoutStepTwoPageMethods {
     this._pageName = "checkout-steptwo-locators.page";
   }
 
-  async clickButtonFinish(): Promise<void> {
+  public async clickButtonFinish(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonFinish");
   }
 }
