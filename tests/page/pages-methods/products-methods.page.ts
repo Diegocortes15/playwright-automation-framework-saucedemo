@@ -1,11 +1,13 @@
 import {Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
+import {SupportFactory} from "../../utils/support-factory.utils";
 import {HeaderComponentMethods} from "./components-methods/header.component";
 
 export class ProductsPageMethods {
   private readonly _page: Page;
   private readonly _testInfo: TestInfo;
   private readonly _playwrightFactory: PlaywrightFactory;
+  private readonly _SupportFactory: SupportFactory;
   private readonly _pageName: string;
 
   /**
@@ -17,6 +19,7 @@ export class ProductsPageMethods {
     this._page = page;
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
+    this._SupportFactory = new SupportFactory(this._page, this._testInfo);
     this._pageName = "products-locators.page";
   }
 
@@ -44,5 +47,31 @@ export class ProductsPageMethods {
 
   public async verifyPricesOrdered(actualPrices: string[], expectedPrices: string[]): Promise<any> {
     await this._playwrightFactory.verifyCompareValues(actualPrices, expectedPrices);
+  }
+
+  public async productsRandomToAdd(): Promise<number[]> {
+    /**
+     * 1. Get array lenght
+     * 2. Genenerate new array with random lenght
+     * 3. Store random index from original array
+     * 4. Get name and price from products
+     * 5. Add products to cart
+     * 6. Return Produtcs added
+     */
+    const productListLenght = await (
+      await this._playwrightFactory.getElementSelector(this._pageName, "itemList")
+    ).count();
+
+    const newIndexProductList = new Set<number>();
+    for (let index: number = 0; index < productListLenght; index++) {
+      newIndexProductList.add(await this._SupportFactory.getRandomPositiveNumber(productListLenght));
+    }
+    return Array.from(newIndexProductList);
+  }
+
+  public async addProducts(indexProducts: number[]): Promise<void> {
+    indexProducts.forEach(
+      async (indexProduct) => await this._playwrightFactory.clickByIndex(this._pageName, "itemBtnsList", indexProduct)
+    );
   }
 }

@@ -1,4 +1,4 @@
-import {test, expect, Page, TestInfo} from "@playwright/test";
+import {test, expect, Page, TestInfo, Locator} from "@playwright/test";
 import {readFileSync} from "fs";
 
 export class PlaywrightFactory {
@@ -21,6 +21,12 @@ export class PlaywrightFactory {
     return data.locators[elementName];
   }
 
+  public async getElementSelector(filePath: string, elementName: string): Promise<Locator> {
+    const rawdata: any = readFileSync(`./tests/page/pages-objects/${filePath}.json`);
+    const data: any = JSON.parse(rawdata);
+    return this._page.locator(data.locators[elementName].selector);
+  }
+
   public async click(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is clicked`, async (): Promise<void> => {
@@ -28,6 +34,18 @@ export class PlaywrightFactory {
       await this._page.click(element.selector);
       await this._testInfo.attach(`🐾 "${element.description}" is clicked`, {
         body: `🐾 "${element.description}" is clicked`,
+        contentType: "text/plain",
+      });
+    });
+  }
+
+  public async clickByIndex(filePath: string, elementName: string, index: number): Promise<void> {
+    const element: any = await this.getElement(filePath, elementName);
+    await test.step(`🐾 "${element.description} ${index}" is clicked`, async (): Promise<void> => {
+      //await this._page.locator(element.selector).nth(index).scrollIntoViewIfNeeded();
+      await this._page.locator(element.selector).nth(index).click();
+      await this._testInfo.attach(`🐾 "${element.description}" is clicked`, {
+        body: `🐾 "${element.description} ${index}" is clicked`,
         contentType: "text/plain",
       });
     });
