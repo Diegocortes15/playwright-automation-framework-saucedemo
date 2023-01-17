@@ -80,7 +80,7 @@ npx playwright test -g "@regression"
 npx playwright test -g "@pw-0001"
 ```
 📗 Story PW-0002 </br>
-📗 Story PW-0003
+📗 Story PW-0013
 
 #### Run test cases by test case 📘
 
@@ -98,3 +98,11 @@ npx playwright test -g "@pw-0003"
 📘 Test case PW-0011</br>
 📘 Test case PW-0012</br>
 📘 Test case PW-0014</br>
+
+### How open Playwright report 🎭
+
+```
+npx playwright show-report
+```
+
+![image](https://user-images.githubusercontent.com/60171460/212830486-6d792d27-4bf3-46d0-affa-d55f6434e129.png)
