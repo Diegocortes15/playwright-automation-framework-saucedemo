@@ -1,4 +1,4 @@
-import {test, expect, Page, TestInfo} from "@playwright/test";
+import {test, expect, Page, TestInfo, Locator} from "@playwright/test";
 import {readFileSync} from "fs";
 
 export class PlaywrightFactory {
@@ -21,6 +21,12 @@ export class PlaywrightFactory {
     return data.locators[elementName];
   }
 
+  public async getElementSelector(filePath: string, elementName: string): Promise<Locator> {
+    const rawdata: any = readFileSync(`./tests/page/pages-objects/${filePath}.json`);
+    const data: any = JSON.parse(rawdata);
+    return this._page.locator(data.locators[elementName].selector);
+  }
+
   public async click(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🐾 "${element.description}" is clicked`, async (): Promise<void> => {
@@ -28,6 +34,18 @@ export class PlaywrightFactory {
       await this._page.click(element.selector);
       await this._testInfo.attach(`🐾 "${element.description}" is clicked`, {
         body: `🐾 "${element.description}" is clicked`,
+        contentType: "text/plain",
+      });
+    });
+  }
+
+  public async clickByIndex(filePath: string, elementName: string, index: number): Promise<void> {
+    const element: any = await this.getElement(filePath, elementName);
+    await test.step(`🐾 "${element.description} ${index}" is clicked`, async (): Promise<void> => {
+      await this._page.locator(element.selector.replace("${value}", index)).scrollIntoViewIfNeeded();
+      await this._page.click(element.selector.replace("${value}", index));
+      await this._testInfo.attach(`🐾 "${element.description}" is clicked`, {
+        body: `🐾 "${element.description} ${index}" is clicked`,
         contentType: "text/plain",
       });
     });
@@ -144,7 +162,7 @@ export class PlaywrightFactory {
 
   public async embedScreenshot(description: string): Promise<void> {
     const screenshot: Buffer = await this._page.screenshot({fullPage: true});
-    await this._testInfo.attach(description, {
+    await this._testInfo.attach(`📸 ${description}`, {
       body: screenshot,
       contentType: "image/jpg",
     });
@@ -196,7 +214,7 @@ export class PlaywrightFactory {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" value is displayed as expected`, async (): Promise<void> => {
       const actualValue: string = await this._page.inputValue(element.selector);
-      if (actualValue === actualValue) {
+      if (actualValue == strExpectedValue) {
         await this.embedScreenshot(
           `✅ "${element.description}" value is displayed as Expected = "${strExpectedValue}" ; Actual = "${actualValue}" - Screenshot`
         );
@@ -312,9 +330,84 @@ export class PlaywrightFactory {
     return elementTextContent;
   }
 
-  public async verifyCompareValues(actual: any, expected: any): Promise<void> {
-    await test.step(`🧪 Verifying that ${actual} match with ${expected}`, async (): Promise<void> => {
-      expect.soft(actual).toEqual(expected);
+  public async getTextByIndex(filePath: string, elementName: string, index: number): Promise<string | null> {
+    const element: any = await this.getElement(filePath, elementName);
+    const elementTextContent =
+      await test.step(`🐾 "${element.description} ${index}" text is obtained`, async (): Promise<string | null> => {
+        return this._page.locator(element.selector.replace("${value}", index)).textContent();
+      });
+    return elementTextContent;
+  }
+
+  public async getText(filePath: string, elementName: string): Promise<string | null> {
+    const element: any = await this.getElement(filePath, elementName);
+    const elementTextContent = await test.step(`🐾 "${element.description}" text is obtained`, async (): Promise<
+      string | null
+    > => {
+      return this._page.locator(element.selector).textContent();
+    });
+    return elementTextContent;
+  }
+
+  public async verifyCompareValues(strActualValue: any, strExpectedValue: any): Promise<void> {
+    const actualValue = JSON.stringify(strActualValue, null, 2);
+    const expectedValue = JSON.stringify(strExpectedValue, null, 2);
+    await test.step(`🧪 Verifying that ${actualValue} match with ${expectedValue}`, async (): Promise<void> => {
+      if (actualValue == expectedValue) {
+        await this.embedScreenshot(
+          `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}" - Screenshot`
+        );
+        await this._testInfo.attach(
+          `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
+          {
+            body: `✅ "Value is displayed as expected = "${expectedValue}" ; actual = "${actualValue}"`,
+            contentType: "text/plain",
+          }
+        );
+      } else {
+        await this.embedScreenshot(
+          `💥 "Value is NOT displayed. Expected = "${expectedValue}" ; Actual = "${actualValue}" - Screenshot`
+        );
+        await this._testInfo.attach(
+          `💥 "Value is NOT displayed. Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
+          {
+            body: `💥 "Value is NOT displayed as expected = "${expectedValue}" ; actual = "${actualValue}"`,
+            contentType: "text/plain",
+          }
+        );
+      }
+      expect.soft(actualValue).toEqual(expectedValue);
+    });
+  }
+
+  public async verifyText(filePath: string, elementName: string, strExpectedText: string): Promise<void> {
+    const element: any = await this.getElement(filePath, elementName);
+    await test.step(`🧪 Verifying if "${element.description}" text is displayed as expected`, async (): Promise<void> => {
+      const actualText: string | null = await this.getText(filePath, elementName);
+      if (actualText == strExpectedText) {
+        await this.embedScreenshot(
+          `✅ "${element.description}" text is displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
+        );
+        await this._testInfo.attach(
+          `✅ "${element.description}" text is displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}"`,
+          {
+            body: `✅ "${element.description}" text is displayed as expected = "${strExpectedText}" ; actual = "${actualText}"`,
+            contentType: "text/plain",
+          }
+        );
+      } else {
+        await this.embedScreenshot(
+          `💥 "${element.description}" text is NOT displayed. Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
+        );
+        await this._testInfo.attach(
+          `💥 "${element.description}" text is NOT displayed. Expected = "${strExpectedText}" ; Actual = "${actualText}"`,
+          {
+            body: `💥 "${element.description}" text is NOT displayed as expected = "${strExpectedText}" ; actual = "${actualText}"`,
+            contentType: "text/plain",
+          }
+        );
+      }
+      expect.soft(actualText).toEqual(strExpectedText);
     });
   }
 }

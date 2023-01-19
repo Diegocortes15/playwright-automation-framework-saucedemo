@@ -19,4 +19,8 @@ export class SupportFactory {
     this._testInfo.annotations.push({type: "testSummary", description: jsonData["testSummary"]});
     this._testInfo.annotations.push({type: "testDescription", description: jsonData["testDescription"]});
   }
+
+  async getRandomPositiveNumber(max: number): Promise<number> {
+    return Math.floor(Math.random() * max);
+  }
 }

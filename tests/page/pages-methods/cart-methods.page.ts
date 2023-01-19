@@ -22,4 +22,22 @@ export class CartPageMethods {
   public async clickCheckoutButton(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonCheckout");
   }
+
+  public async getCartProducts(): Promise<object> {
+    const productListLenght = await (
+      await this._playwrightFactory.getElementSelector(this._pageName, "itemCartList")
+    ).count();
+    const itemsAdded: {itemName: string | null; price: string | null}[] = [];
+    for (let index = 0; index < productListLenght; index++) {
+      itemsAdded.push({
+        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
+        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
+      });
+    }
+    return itemsAdded;
+  }
+
+  async verifyProductsAdded(productsAdded: object, cartProducts: object) {
+    await this._playwrightFactory.verifyCompareValues(productsAdded, cartProducts);
+  }
 }
