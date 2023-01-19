@@ -8,6 +8,7 @@ export class ProductsPageMethods {
   private readonly _testInfo: TestInfo;
   private readonly _playwrightFactory: PlaywrightFactory;
   private readonly _SupportFactory: SupportFactory;
+  private readonly _headerComponent: HeaderComponentMethods;
   private readonly _pageName: string;
 
   /**
@@ -20,11 +21,12 @@ export class ProductsPageMethods {
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
     this._SupportFactory = new SupportFactory(this._page, this._testInfo);
+    this._headerComponent = new HeaderComponentMethods(this._page, this._testInfo);
     this._pageName = "products-locators.page";
   }
 
   public get getHeaderComponent(): HeaderComponentMethods {
-    return new HeaderComponentMethods(this._page, this._testInfo);
+    return this._headerComponent;
   }
 
   public async getPrices(): Promise<string[]> {
@@ -34,6 +36,10 @@ export class ProductsPageMethods {
       ).map(async (price: string): Promise<string> => price.slice(1))
     );
     return prices;
+  }
+
+  public async verifyCurrentPage({titlePage: expectedTitlePage}) {
+    await this._playwrightFactory.verifyText(this._pageName, "titlePage", expectedTitlePage);
   }
 
   public async sortProductsByVisibleText({sortProducts}): Promise<any> {
@@ -50,14 +56,6 @@ export class ProductsPageMethods {
   }
 
   public async productsRandomToAdd(): Promise<number[]> {
-    /**
-     * 1. Get array lenght
-     * 2. Genenerate new array with random lenght
-     * 3. Store random index from original array
-     * 4. Get name and price from products
-     * 5. Add products to cart
-     * 6. Return Produtcs added
-     */
     const productListLenght = await (
       await this._playwrightFactory.getElementSelector(this._pageName, "itemList")
     ).count();
@@ -66,12 +64,35 @@ export class ProductsPageMethods {
     for (let index: number = 0; index < productListLenght; index++) {
       newIndexProductList.add(await this._SupportFactory.getRandomPositiveNumber(productListLenght));
     }
-    return Array.from(newIndexProductList);
+    return [...newIndexProductList];
   }
 
-  public async addProducts(indexProducts: number[]): Promise<void> {
-    indexProducts.forEach(
-      async (indexProduct) => await this._playwrightFactory.clickByIndex(this._pageName, "itemBtnsList", indexProduct)
+  public async addProducts(indexProducts: number[]): Promise<object> {
+    const itemsAdded: {itemName: string | null; price: string | null}[] = [];
+    for (const index of indexProducts) {
+      itemsAdded.push({
+        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
+        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
+      });
+      await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", index);
+    }
+    await this._playwrightFactory.embedScreenshot("Products added");
+    return itemsAdded;
+  }
+
+  public async addSpecificProduct({addProduct}): Promise<object> {
+    const reformatProductName = addProduct.toLowerCase();
+    const productList = await this._playwrightFactory.getAllTextContents(this._pageName, "itemNameList");
+    const indexProduct = productList.findIndex((productName) =>
+      reformatProductName.includes(productName.toLowerCase())
     );
+    await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", indexProduct);
+    await this._playwrightFactory.embedScreenshot(addProduct);
+    return [
+      {
+        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
+        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
+      },
+    ];
   }
 }
