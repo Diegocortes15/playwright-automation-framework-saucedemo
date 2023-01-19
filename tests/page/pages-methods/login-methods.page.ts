@@ -23,29 +23,35 @@ export class LoginPageMethods {
 
   public async goto(): Promise<void> {
     await this._page.goto("/");
+    //this._playwrightFactory.waitForDomLoad();
+    //this._playwrightFactory.waitForNetworkIdle();
   }
 
-  public async enterUsername(strValue: string): Promise<void> {
-    await this._playwrightFactory.sendKeys(this._pageName, "inputUser", strValue);
-    await this._playwrightFactory.verifyValue(this._pageName, "inputUser", strValue);
+  public async enterUsername({username}): Promise<void> {
+    await this._playwrightFactory.sendKeys(this._pageName, "inputUser", username);
   }
 
-  public async enterPassword(strValue: string): Promise<void> {
-    await this._playwrightFactory.sendKeys(this._pageName, "inputPassword", strValue);
-    await this._playwrightFactory.verifyValue(this._pageName, "inputPassword", strValue);
+  public async verifyUsername({username}): Promise<void> {
+    await this._playwrightFactory.verifyValue(this._pageName, "inputUser", username);
   }
 
+  public async enterPassword({password}): Promise<void> {
+    await this._playwrightFactory.sendKeys(this._pageName, "inputPassword", password);
+  }
+
+  public async verifyPassword({password}): Promise<void> {
+    await this._playwrightFactory.verifyValue(this._pageName, "inputPassword", password);
+  }
+  
   public async clickButtonSubmit(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonSubmit");
   }
 
-  public async login(loginPageData: any): Promise<void> {
-    const {username} = loginPageData;
-    const {password} = loginPageData;
-    await this.enterUsername(username);
-    await this.enterPassword(password);
-    await this.clickButtonSubmit();
+  public async login({username, password}): Promise<void> {
+    await this.enterUsername({username});
+    await this.enterPassword({password});
     await this._playwrightFactory.embedScreenshot("Login - Screenshot");
+    await this.clickButtonSubmit();
   }
 
   public async verifyURL(): Promise<void> {

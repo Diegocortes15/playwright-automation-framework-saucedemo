@@ -20,9 +20,21 @@
       "selector": ".inventory_item_price",
       "description": "Item price list"
     },
-    "itemBtnsList": {
+    "itemBtnList": {
       "selector": "button.btn_inventory",
       "description": "Item button list"
+    },
+    "itemName": {
+      "selector": ".inventory_item_name >> nth=${value}",
+      "description": "Item name"
+    },
+    "itemPrice": {
+      "selector": ".inventory_item_price >> nth=${value}",
+      "description": "Item price"
+    },
+    "itemBtn": {
+      "selector": "button.btn_inventory >> nth=${value}",
+      "description": "Item button"
     }
   }
 }

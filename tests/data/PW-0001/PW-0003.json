@@ -6,5 +6,8 @@
   "loginPage": {
     "username": "standard_user",
     "password": "secret_sauce"
+  },
+  "productsPage": {
+    "titlePage": "Products"
   }
 }

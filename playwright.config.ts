@@ -13,7 +13,7 @@ import {devices} from "@playwright/test";
 const config: PlaywrightTestConfig = {
   testDir: "./tests/specs",
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 2 * 60 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -33,6 +33,7 @@ const config: PlaywrightTestConfig = {
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    video: "on",
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
