@@ -57,8 +57,4 @@ export class LoginPageMethods {
   public async verifyURL(): Promise<void> {
     await this._playwrightFactory.verifyURL(this._url);
   }
-
-  public async verifyURL(): Promise<void> {
-    await this._playwrightFactory.verifyURL(this._url);
-  }
 }
