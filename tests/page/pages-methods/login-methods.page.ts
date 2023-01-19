@@ -42,7 +42,7 @@ export class LoginPageMethods {
   public async verifyPassword({password}): Promise<void> {
     await this._playwrightFactory.verifyValue(this._pageName, "inputPassword", password);
   }
-
+  
   public async clickButtonSubmit(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonSubmit");
   }
@@ -52,6 +52,10 @@ export class LoginPageMethods {
     await this.enterPassword({password});
     await this._playwrightFactory.embedScreenshot("Login - Screenshot");
     await this.clickButtonSubmit();
+  }
+
+  public async verifyURL(): Promise<void> {
+    await this._playwrightFactory.verifyURL(this._url);
   }
 
   public async verifyURL(): Promise<void> {
