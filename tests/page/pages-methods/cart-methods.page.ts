@@ -6,6 +6,7 @@ export class CartPageMethods {
   private readonly _testInfo: TestInfo;
   private readonly _playwrightFactory: PlaywrightFactory;
   private readonly _pageName: string;
+  public cartItemsAdded: {itemName: string | null; price: string | null}[];
 
   /**
    * @param {import('@playwright/test').Page} page
@@ -17,27 +18,27 @@ export class CartPageMethods {
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
     this._pageName = "cart-locators.page";
+    this.cartItemsAdded = [];
   }
 
   public async clickCheckoutButton(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonCheckout");
   }
 
-  public async getCartProducts(): Promise<object> {
+  public async getCartProducts(): Promise<void> {
     const productListLenght = await (
       await this._playwrightFactory.getElementSelector(this._pageName, "itemCartList")
     ).count();
-    const itemsAdded: {itemName: string | null; price: string | null}[] = [];
     for (let index = 0; index < productListLenght; index++) {
-      itemsAdded.push({
+      this.cartItemsAdded.push({
         itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
         price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
       });
     }
-    return itemsAdded;
   }
 
-  async verifyProductsAdded(productsAdded: object, cartProducts: object) {
-    await this._playwrightFactory.verifyCompareValues(productsAdded, cartProducts);
+  async verifyProductsAdded(expectedProductsAdded: object) {
+    await this.getCartProducts();
+    await this._playwrightFactory.verifyCompareValues(expectedProductsAdded, this.cartItemsAdded);
   }
 }
