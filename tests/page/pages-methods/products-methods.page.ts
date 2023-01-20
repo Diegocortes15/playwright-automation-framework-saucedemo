@@ -10,6 +10,8 @@ export class ProductsPageMethods {
   private readonly _SupportFactory: SupportFactory;
   private readonly _headerComponent: HeaderComponentMethods;
   private readonly _pageName: string;
+  private _indexProductsToAdd: number[];
+  public itemsAdded: {itemName: string | null; price: string | null}[];
 
   /**
    * @param {import('@playwright/test').Page} page
@@ -23,6 +25,7 @@ export class ProductsPageMethods {
     this._SupportFactory = new SupportFactory(this._page, this._testInfo);
     this._headerComponent = new HeaderComponentMethods(this._page, this._testInfo);
     this._pageName = "products-locators.page";
+    this.itemsAdded = [];
   }
 
   public get getHeaderComponent(): HeaderComponentMethods {
@@ -55,7 +58,7 @@ export class ProductsPageMethods {
     await this._playwrightFactory.verifyCompareValues(actualPrices, expectedPrices);
   }
 
-  public async productsRandomToAdd(): Promise<number[]> {
+  public async productsRandomToAdd(): Promise<void> {
     const productListLenght = await (
       await this._playwrightFactory.getElementSelector(this._pageName, "itemList")
     ).count();
@@ -64,23 +67,26 @@ export class ProductsPageMethods {
     for (let index: number = 0; index < productListLenght; index++) {
       newIndexProductList.add(await this._SupportFactory.getRandomPositiveNumber(productListLenght));
     }
-    return [...newIndexProductList];
+    this._indexProductsToAdd = [...newIndexProductList];
   }
 
-  public async addProducts(indexProducts: number[]): Promise<object> {
-    const itemsAdded: {itemName: string | null; price: string | null}[] = [];
-    for (const index of indexProducts) {
-      itemsAdded.push({
+  public async addProducts(): Promise<void> {
+    await this.productsRandomToAdd();
+    for (const index of this._indexProductsToAdd) {
+      this.itemsAdded.push({
         itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
         price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
       });
       await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", index);
     }
     await this._playwrightFactory.embedScreenshot("Products added");
-    return itemsAdded;
   }
 
-  public async addSpecificProduct({addProduct}): Promise<object> {
+  public async getItemsAdded(): Promise<{itemName: string | null; price: string | null}[]> {
+    return this.itemsAdded;
+  }
+
+  public async addSpecificProduct({addProduct}): Promise<void> {
     const reformatProductName = addProduct.toLowerCase();
     const productList = await this._playwrightFactory.getAllTextContents(this._pageName, "itemNameList");
     const indexProduct = productList.findIndex((productName) =>
@@ -88,11 +94,9 @@ export class ProductsPageMethods {
     );
     await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", indexProduct);
     await this._playwrightFactory.embedScreenshot(addProduct);
-    return [
-      {
-        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
-        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
-      },
-    ];
+    this.itemsAdded.push({
+      itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
+      price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
+    });
   }
 }

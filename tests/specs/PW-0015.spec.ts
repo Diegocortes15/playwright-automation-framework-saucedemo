@@ -19,11 +19,10 @@ Tags: ${testDataTestCase_1["tags"]}`, async ({page}) => {
   await supportFactory.addAnnotations(data);
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
-  const indexProductsToAdd = await productsPageMethods.productsRandomToAdd();
-  const productsAddedToCart = await productsPageMethods.addProducts(indexProductsToAdd);
+  await productsPageMethods.addProducts();
+  const productsAddedToCart = await productsPageMethods.getItemsAdded();
   await productsPageMethods.getHeaderComponent.clickShoppingCartButton();
-  const cartProductList = await cartPageMethods.getCartProducts();
-  await cartPageMethods.verifyProductsAdded(productsAddedToCart, cartProductList);
+  await cartPageMethods.verifyProductsAdded(productsAddedToCart);
 });
 
 const testDataTestCase_2 = JSON.parse(readFileSync(`./tests/data/${storyParentId}/PW-0017.json`, "utf-8"));
@@ -38,8 +37,8 @@ Tags: ${testDataTestCase_2["tags"]}`, async ({page}) => {
   await supportFactory.addAnnotations(data);
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
-  const productAddedToCart = await productsPageMethods.addSpecificProduct(data.productsPage);
+  await productsPageMethods.addSpecificProduct(data.productsPage);
+  const productAddedToCart = await productsPageMethods.getItemsAdded();
   await productsPageMethods.getHeaderComponent.clickShoppingCartButton();
-  const productCart = await cartPageMethods.getCartProducts();
-  await cartPageMethods.verifyProductsAdded(productAddedToCart, productCart);
+  await cartPageMethods.verifyProductsAdded(productAddedToCart);
 });

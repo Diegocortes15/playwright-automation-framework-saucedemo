@@ -1,7 +1,7 @@
 {
   "testCase": "PW-0016",
-  "testSummary": "Sort products by Price (low to high)",
-  "testDescription": " Validate the products have been sorted by price correctly, low to high",
+  "testSummary": "Add multiple items to the shopping cart",
+  "testDescription": " Validate all the items that have been added to the shopping cart",
   "tags": "@regression @sprint2 @pw-0015 @pw-0016",
   "loginPage": {
     "username": "standard_user",
