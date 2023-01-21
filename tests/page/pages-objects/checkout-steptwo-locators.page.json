@@ -6,7 +6,7 @@
     },
     "buttonFinish": {
       "selector": "[data-test='finish']",
-      "description": "Input first name"
+      "description": "Finish button"
     }
   }
 }

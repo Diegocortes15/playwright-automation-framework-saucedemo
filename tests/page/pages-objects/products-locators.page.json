@@ -1,6 +1,6 @@
 {
   "locators": {
-    "titlePage": {
+    "pageTitle": {
       "selector": ".title",
       "description": "Page title"
     },

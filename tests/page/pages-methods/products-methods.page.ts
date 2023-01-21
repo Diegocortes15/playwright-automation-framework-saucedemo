@@ -42,7 +42,7 @@ export class ProductsPageMethods {
   }
 
   public async verifyCurrentPage({titlePage: expectedTitlePage}) {
-    await this._playwrightFactory.verifyText(this._pageName, "titlePage", expectedTitlePage);
+    await this._playwrightFactory.verifyText(this._pageName, "pageTitle", expectedTitlePage);
   }
 
   public async sortProductsByVisibleText({sortProducts}): Promise<any> {
