@@ -13,11 +13,11 @@
       "description": "Input last name"
     },
     "inputPostalCode": {
-      "selector": "[data-test='lastName']",
+      "selector": "[data-test='postalCode']",
       "description": "Input postal code"
     },
     "buttonContinue": {
-      "selector": "[data-test='lastName']",
+      "selector": "[data-test='continue']",
       "description": "Button continue"
     }
   }

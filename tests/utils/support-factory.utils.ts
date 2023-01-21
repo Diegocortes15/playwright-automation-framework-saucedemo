@@ -1,4 +1,5 @@
 import {Page, TestInfo} from "@playwright/test";
+import casual from "casual";
 
 export class SupportFactory {
   //private readonly _page: Page;
@@ -22,5 +23,17 @@ export class SupportFactory {
 
   async getRandomPositiveNumber(max: number): Promise<number> {
     return Math.floor(Math.random() * max);
+  }
+
+  async getRandomFirstName(): Promise<string> {
+    return casual.first_name;
+  }
+
+  async getRandomLastName(): Promise<string> {
+    return casual.last_name;
+  }
+
+  async getRandomZip(): Promise<string> {
+    return casual.zip({digits: 5 | 9});
   }
 }

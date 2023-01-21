@@ -42,7 +42,7 @@ export class LoginPageMethods {
   public async verifyPassword({password}): Promise<void> {
     await this._playwrightFactory.verifyValue(this._pageName, "inputPassword", password);
   }
-  
+
   public async clickButtonSubmit(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonSubmit");
   }

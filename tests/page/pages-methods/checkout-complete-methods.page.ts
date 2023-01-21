@@ -17,7 +17,9 @@ export class CheckoutCompletePageMethods {
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
     this._pageName = "checkout-complete-locators.page";
-    this._playwrightFactory.waitForDomLoad();
-    this._playwrightFactory.waitForNetworkIdle();
+  }
+
+  public async verifyCurrentPage({titlePage: expectedTitlePage}) {
+    await this._playwrightFactory.verifyText(this._pageName, "pageTitle", expectedTitlePage);
   }
 }
