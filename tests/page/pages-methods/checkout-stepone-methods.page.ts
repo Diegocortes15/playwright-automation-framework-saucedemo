@@ -19,19 +19,28 @@ export class CheckoutStepOnePageMethods {
     this._pageName = "checkout-stepone-locators.page";
   }
 
-  public async enterFirstName(strValue: string): Promise<void> {
-    await this._playwrightFactory.sendTypedKeys(this._pageName, "inputFirstName", strValue);
-    await this._playwrightFactory.verifyValue(this._pageName, "inputFirstName", strValue);
+  public async enterFirstName({firstName}): Promise<void> {
+    await this._playwrightFactory.sendTypedKeys(this._pageName, "inputFirstName", firstName);
   }
 
-  public async enterLastName(strValue: string): Promise<void> {
-    await this._playwrightFactory.sendTypedKeys(this._pageName, "inputLastName", strValue);
-    await this._playwrightFactory.verifyValue(this._pageName, "inputLastName", strValue);
+  public async verifyFirstName({firstName}): Promise<void> {
+    await this._playwrightFactory.verifyValue(this._pageName, "inputFirstName", firstName);
   }
 
-  public async enterPostalCode(strValue: string): Promise<void> {
-    await this._playwrightFactory.sendTypedKeys(this._pageName, "inputPostalCode", strValue);
-    await this._playwrightFactory.verifyValue(this._pageName, "inputPostalCode", strValue);
+  public async enterLastName({lastName}): Promise<void> {
+    await this._playwrightFactory.sendTypedKeys(this._pageName, "inputLastName", lastName);
+  }
+
+  public async verifyLastName({lastName}): Promise<void> {
+    await this._playwrightFactory.verifyValue(this._pageName, "inputLastName", lastName);
+  }
+
+  public async enterPostalCode({postalCode}): Promise<void> {
+    await this._playwrightFactory.sendTypedKeys(this._pageName, "inputPostalCode", postalCode);
+  }
+
+  public async verifyPostalCode({postalCode}): Promise<void> {
+    await this._playwrightFactory.verifyValue(this._pageName, "inputPostalCode", postalCode);
   }
 
   public async clickButtonContinue(): Promise<void> {

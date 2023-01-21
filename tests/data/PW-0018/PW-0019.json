@@ -1,0 +1,13 @@
+{
+  "testCase": "PW-0019",
+  "testSummary": "Complete a purchase",
+  "testDescription": " Validate the user navigates to the order confirmation page",
+  "tags": "@regression @sprint3 @pw-0018 @pw-0019",
+  "loginPage": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "checkoutCompletePage": {
+    "titlePage": "Checkout: Complete!"
+  }
+}
