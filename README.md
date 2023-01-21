@@ -66,12 +66,26 @@ npm install
 
 ### How to Run test cases 🧪
 
-#### Run test cases by regression suite 🌀
+---
 
+#### Run test cases by regression suite 🌀
 🌀 Regression
 ``` 
 npx playwright test -g "@regression"
 ```
+
+---
+
+#### Run test cases by sprints ➰
+➰ Sprint 1
+``` 
+npx playwright test -g "@sprint1"
+```
+|➰ Sprints|||
+|---|---|---|
+|➰ @sprint1|➰ @sprint2|➰ @sprint3|
+
+---
 
 #### Run test cases by user story 📗
 
@@ -79,8 +93,13 @@ npx playwright test -g "@regression"
 ```
 npx playwright test -g "@pw-0001"
 ```
-📗 Story PW-0002 </br>
-📗 Story PW-0013
+
+|📗 Stories|||
+|---|---|---|
+|📗 @pw-0001|📗 @pw-0002|📗 @pw-0013|
+|📗 @pw-0015|📗 @pw-0018||
+
+---
 
 #### Run test cases by test case 📘
 
@@ -88,16 +107,13 @@ npx playwright test -g "@pw-0001"
 ```
 npx playwright test -g "@pw-0003"
 ```
-📘 Test case PW-0004</br>
-📘 Test case PW-0005</br>
-📘 Test case PW-0006</br>
-📘 Test case PW-0007</br>
-📘 Test case PW-0008</br>
-📘 Test case PW-0009</br>
-📘 Test case PW-0010</br>
-📘 Test case PW-0011</br>
-📘 Test case PW-0012</br>
-📘 Test case PW-0014</br>
+|📘 Test cases|||
+|---|---|---|
+|📘 @pw-0003|📘 @pw-0004|📘 @pw-0005|
+|📘 @pw-0006|📘 @pw-0007|📘 @pw-0008|
+|📘 @pw-0009|📘 @pw-0010|📘 @pw-0011|
+|📘 @pw-0012|📘 @pw-0014|📘 @pw-0016|
+|📘 @pw-0017|📘 @pw-0019||
 
 ### How open Playwright report 🎭
 
