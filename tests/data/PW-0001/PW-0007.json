@@ -5,6 +5,7 @@
   "tags": "@regression @sprint1 @pw-0001 @pw-0007",
   "loginPage": {
     "username": "",
-    "password": "secret_sauce"
+    "password": "secret_sauce",
+    "validationMessage": "Username is required"
   }
 }
