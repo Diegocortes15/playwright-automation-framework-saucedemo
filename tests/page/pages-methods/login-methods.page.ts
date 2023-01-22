@@ -23,8 +23,6 @@ export class LoginPageMethods {
 
   public async goto(): Promise<void> {
     await this._page.goto("/");
-    //this._playwrightFactory.waitForDomLoad();
-    //this._playwrightFactory.waitForNetworkIdle();
   }
 
   public async enterUsername({username}): Promise<void> {
@@ -56,5 +54,9 @@ export class LoginPageMethods {
 
   public async verifyURL(): Promise<void> {
     await this._playwrightFactory.verifyURL(this._url);
+  }
+
+  public async verifyValidationMessage({validationMessage}) {
+    await this._playwrightFactory.verifyText(this._pageName, "errorMessage", validationMessage);
   }
 }

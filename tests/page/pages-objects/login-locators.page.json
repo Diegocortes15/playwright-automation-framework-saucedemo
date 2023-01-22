@@ -14,7 +14,7 @@
     },
     "errorMessage": {
       "selector": ".error-message-container.error",
-      "description": "Button continue"
+      "description": "Error Message"
     }
   }
 }

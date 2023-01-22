@@ -5,6 +5,7 @@
   "tags": "@regression @sprint1 @pw-0001 @pw-0006",
   "loginPage": {
     "username": "locked_out_user",
-    "password": "secret_sauce"
+    "password": "secret_sauce",
+    "validationMessage": "Sorry, this user has been locked out"
   }
 }

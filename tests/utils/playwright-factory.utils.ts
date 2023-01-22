@@ -296,7 +296,7 @@ export class PlaywrightFactory {
   public async verifyChecked(filePath: string, elementName: string): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" is Checked`, async (): Promise<void> => {
-      const booleanFlag: Boolean = await this._page.isEnabled(element.selector);
+      const booleanFlag: Boolean = await this._page.isChecked(element.selector);
       if (booleanFlag) {
         await this.embedScreenshot(`✅ "${element.description}" is Checked as Expected - Screenshot`);
         await this._testInfo.attach(`✅ "${element.description}" is Checked as Expected`, {
@@ -310,13 +310,31 @@ export class PlaywrightFactory {
           contentType: "text/plain",
         });
       }
-      await expect.soft(this._page.locator(element.selector)).toBeEnabled();
+      await expect.soft(this._page.locator(element.selector)).toBeChecked();
     });
   }
 
-  public async verifyURL(url: string) {
-    await test.step(`🧪 Verifying that the user is in the url is "${url}"`, async (): Promise<void> => {
-      await expect.soft(this._page).toHaveURL(url);
+  public async verifyURL(expectedURL: string) {
+    await test.step(`🧪 Verifying that the user is in the url "${expectedURL}"`, async (): Promise<void> => {
+      const actualUrl = this._page.url();
+      if (actualUrl == expectedURL) {
+        await this.embedScreenshot(
+          `✅ "URL page is as Expected = "${expectedURL}" ; Actual = "${actualUrl}" - Screenshot`
+        );
+        await this._testInfo.attach(`✅ "URL page is as Expected = "${expectedURL}" ; Actual = "${actualUrl}"`, {
+          body: `✅ "URL page is as Expected = "${expectedURL}" ; Actual = "${actualUrl}"`,
+          contentType: "text/plain",
+        });
+      } else {
+        await this.embedScreenshot(
+          `💥 "URL page is NOT as Expected = "${expectedURL}" ; Actual = "${actualUrl}" - Screenshot`
+        );
+        await this._testInfo.attach(`💥 "URL page is NOT. Expected = "${expectedURL}" ; Actual = "${actualUrl}"`, {
+          body: `💥 "URL page is NOT as Expected = "${expectedURL}" ; Actual = "${actualUrl}"`,
+          contentType: "text/plain",
+        });
+      }
+      await expect.soft(this._page).toHaveURL(expectedURL);
     });
   }
 
@@ -360,7 +378,7 @@ export class PlaywrightFactory {
         await this._testInfo.attach(
           `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
           {
-            body: `✅ "Value is displayed as expected = "${expectedValue}" ; actual = "${actualValue}"`,
+            body: `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
             contentType: "text/plain",
           }
         );
@@ -371,7 +389,7 @@ export class PlaywrightFactory {
         await this._testInfo.attach(
           `💥 "Value is NOT displayed. Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
           {
-            body: `💥 "Value is NOT displayed as expected = "${expectedValue}" ; actual = "${actualValue}"`,
+            body: `💥 "Value is NOT displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
             contentType: "text/plain",
           }
         );
@@ -384,7 +402,7 @@ export class PlaywrightFactory {
     const element: any = await this.getElement(filePath, elementName);
     await test.step(`🧪 Verifying if "${element.description}" text is displayed as expected`, async (): Promise<void> => {
       const actualText: string | null = await this.getText(filePath, elementName);
-      if (actualText == strExpectedText) {
+      if (actualText?.includes(strExpectedText)) {
         await this.embedScreenshot(
           `✅ "${element.description}" text is displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
         );
@@ -397,17 +415,17 @@ export class PlaywrightFactory {
         );
       } else {
         await this.embedScreenshot(
-          `💥 "${element.description}" text is NOT displayed. Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
+          `💥 "${element.description}" text is NOT displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
         );
         await this._testInfo.attach(
-          `💥 "${element.description}" text is NOT displayed. Expected = "${strExpectedText}" ; Actual = "${actualText}"`,
+          `💥 "${element.description}" text is NOT displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}"`,
           {
-            body: `💥 "${element.description}" text is NOT displayed as expected = "${strExpectedText}" ; actual = "${actualText}"`,
+            body: `💥 "${element.description}" text is NOT displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}"`,
             contentType: "text/plain",
           }
         );
       }
-      expect.soft(actualText).toEqual(strExpectedText);
+      expect.soft(this._page.locator(element.selector)).toContainText(strExpectedText);
     });
   }
 }
