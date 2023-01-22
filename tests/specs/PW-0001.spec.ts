@@ -74,6 +74,7 @@ Tags: ${testDataTestCase_4["tags"]}`, async ({page}) => {
   await loginPageMethods.verifyUsername(data.loginPage);
   await loginPageMethods.verifyPassword(data.loginPage);
   await loginPageMethods.clickButtonSubmit();
+  await loginPageMethods.verifyValidationMessage(data.loginPage);
 });
 
 const testDataTestCase_5 = JSON.parse(readFileSync(`./tests/data/${storyParentId}/PW-0007.json`, "utf-8"));
@@ -90,6 +91,7 @@ Tags: ${testDataTestCase_5["tags"]}`, async ({page}) => {
   await loginPageMethods.verifyUsername(data.loginPage);
   await loginPageMethods.verifyPassword(data.loginPage);
   await loginPageMethods.clickButtonSubmit();
+  await loginPageMethods.verifyValidationMessage(data.loginPage);
 });
 
 const testDataTestCase_6 = JSON.parse(readFileSync(`./tests/data/${storyParentId}/PW-0008.json`, "utf-8"));
@@ -106,6 +108,7 @@ Tags: ${testDataTestCase_6["tags"]}`, async ({page}) => {
   await loginPageMethods.verifyUsername(data.loginPage);
   await loginPageMethods.verifyPassword(data.loginPage);
   await loginPageMethods.clickButtonSubmit();
+  await loginPageMethods.verifyValidationMessage(data.loginPage);
 });
 
 const testDataTestCase_7 = JSON.parse(readFileSync(`./tests/data/${storyParentId}/PW-0009.json`, "utf-8"));
@@ -122,4 +125,5 @@ Tags: ${testDataTestCase_7["tags"]}`, async ({page}) => {
   await loginPageMethods.verifyUsername(data.loginPage);
   await loginPageMethods.verifyPassword(data.loginPage);
   await loginPageMethods.clickButtonSubmit();
+  await loginPageMethods.verifyValidationMessage(data.loginPage);
 });
