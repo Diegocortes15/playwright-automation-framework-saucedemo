@@ -1,0 +1,10 @@
+{
+  "testCase": "PW-ACC-Login",
+  "testSummary": "Verify login accessibility",
+  "testDescription": "Verify login accessibility",
+  "tags": "@accessibility-testing @pw-acc-login",
+  "loginPage": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  }
+}
