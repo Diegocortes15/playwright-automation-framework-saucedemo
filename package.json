@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npx playwright test",
     "update-screenshots": "npx playwright test -g \"@visual-validation\" --update-snapshots",
-    "regression-tests": "npx playwright test -g \"@regression\""
+    "regression-tests": "npx playwright test -g \"@regression\"",
+    "accessibility-tests": "npx playwright test -g \"@accessibility-testing\""
   },
   "author": "Diego Alejandro Cortes Roa",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "@playwright/test": "^1.29.2"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.5.2",
     "casual": "^1.6.2",
     "fs": "^0.0.1-security"
   }
