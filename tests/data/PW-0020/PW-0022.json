@@ -1,0 +1,10 @@
+{
+  "testCase": "PW-0022",
+  "testSummary": "Verify checkout information UI",
+  "testDescription": " Verify checkout information user interface",
+  "tags": "@visual-validation @sprint3 @pw-0020 @pw-0022",
+  "loginPage": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  }
+}

@@ -1,7 +1,7 @@
 import {Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
 
-export class CheckoutStepOnePageMethods {
+export class CheckoutInformationPageMethods {
   private readonly _page: Page;
   private readonly _testInfo: TestInfo;
   private readonly _playwrightFactory: PlaywrightFactory;
@@ -16,7 +16,7 @@ export class CheckoutStepOnePageMethods {
     this._page = page;
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
-    this._pageName = "checkout-stepone-locators.page";
+    this._pageName = "checkout-information-locators.page";
   }
 
   public async enterFirstName({firstName}): Promise<void> {
@@ -45,5 +45,12 @@ export class CheckoutStepOnePageMethods {
 
   public async clickButtonContinue(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "buttonContinue");
+  }
+
+  public async verifyCheckoutInformationView({testCase}) {
+    await this._playwrightFactory.verifySnapshot(this._pageName, "checkoutInformationContainer", [
+      testCase,
+      "checkoutInformationContainer.png",
+    ]);
   }
 }

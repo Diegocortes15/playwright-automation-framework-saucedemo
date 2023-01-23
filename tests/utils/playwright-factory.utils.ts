@@ -160,12 +160,30 @@ export class PlaywrightFactory {
     await this._page.waitForLoadState("networkidle");
   }
 
-  public async embedScreenshot(description: string): Promise<void> {
-    const screenshot: Buffer = await this._page.screenshot({fullPage: true});
-    await this._testInfo.attach(`📸 ${description}`, {
-      body: screenshot,
-      contentType: "image/jpg",
+  public async embedFullPageScreenshot(description: string): Promise<void> {
+    await test.step(`📸 "${description} - Full page screenshot`.trim(), async (): Promise<void> => {
+      const screenshot: Buffer = await this._page.screenshot({fullPage: true});
+      await this._testInfo.attach(`📸 ${description}`, {
+        body: screenshot,
+        contentType: "image/jpg",
+      });
     });
+  }
+
+  public async embedElementScreenshot(filePath: string, elementName: string): Promise<void>;
+  public async embedElementScreenshot(filePath: string, elementName: string, description: string): Promise<void>;
+  public async embedElementScreenshot(filePath: string, elementName: string, description?: string): Promise<void> {
+    const element: any = await this.getElement(filePath, elementName);
+    await test.step(
+      `📸 "${element.description}" ${description} - Element screenshot`.trim(),
+      async (): Promise<void> => {
+        const screenshot: Buffer = await this._page.locator(element.selector).screenshot();
+        await this._testInfo.attach(`📸 ${element.description} ${description}`.trim(), {
+          body: screenshot,
+          contentType: "image/jpg",
+        });
+      }
+    );
   }
 
   public async verifyHidden(filePath: string, elementName: string): Promise<void> {
@@ -173,13 +191,13 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" is Hidden`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isHidden(element.selector);
       if (booleanFlag) {
-        await this.embedScreenshot(`✅ "${element.description}" is Hidden as expected - Screenshot`);
+        await this.embedFullPageScreenshot(`✅ "${element.description}" is Hidden as expected - Screenshot`);
         await this._testInfo.attach(`✅ "${element.description}" is Hidden as expected`, {
           body: `✅ "${element.description}" is Hidden as expected`,
           contentType: "text/plain",
         });
       } else {
-        await this.embedScreenshot(`💥 "${element.description}" is NOT Hidden - Failure - Screenshot`);
+        await this.embedFullPageScreenshot(`💥 "${element.description}" is NOT Hidden - Failure - Screenshot`);
         await this._testInfo.attach(`💥 "${element.description}" is NOT Hidden - Failure`, {
           body: `💥 "${element.description}" is NOT Hidden - Failure`,
           contentType: "text/plain",
@@ -194,13 +212,13 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" is Visible`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isVisible(element.selector);
       if (booleanFlag) {
-        await this.embedScreenshot(`✅ "${element.description}" is Visible as expected - Screenshot`);
+        await this.embedFullPageScreenshot(`✅ "${element.description}" is Visible as expected - Screenshot`);
         await this._testInfo.attach(`✅ "${element.description}" is Visible as expected`, {
           body: `✅ "${element.description}" is Visible as expected`,
           contentType: "text/plain",
         });
       } else {
-        await this.embedScreenshot(`💥 "${element.description}" is NOT Visible - Failure - Screenshot`);
+        await this.embedFullPageScreenshot(`💥 "${element.description}" is NOT Visible - Failure - Screenshot`);
         await this._testInfo.attach(`💥 "${element.description}" is NOT Visible - Failure`, {
           body: `💥 "${element.description}" is NOT Visible - Failure`,
           contentType: "text/plain",
@@ -215,7 +233,7 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" value is displayed as expected`, async (): Promise<void> => {
       const actualValue: string = await this._page.inputValue(element.selector);
       if (actualValue == strExpectedValue) {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `✅ "${element.description}" value is displayed as Expected = "${strExpectedValue}" ; Actual = "${actualValue}" - Screenshot`
         );
         await this._testInfo.attach(
@@ -226,7 +244,7 @@ export class PlaywrightFactory {
           }
         );
       } else {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `💥 "${element.description}" value is NOT displayed. Expected = "${strExpectedValue}" ; Actual = "${actualValue}" - Screenshot`
         );
         await this._testInfo.attach(
@@ -246,13 +264,13 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" is Disable`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isDisabled(element.selector);
       if (booleanFlag) {
-        await this.embedScreenshot(`✅ "${element.description}" is Disabled as Expected - Screenshot`);
+        await this.embedFullPageScreenshot(`✅ "${element.description}" is Disabled as Expected - Screenshot`);
         await this._testInfo.attach(`✅ "${element.description}" is Disabled as Expected`, {
           body: `✅ "${element.description}" is Disabled as Expected`,
           contentType: "text/plain",
         });
       } else {
-        await this.embedScreenshot(`💥 "${element.description}" is NOT Disabled - Failure - Screenshot`);
+        await this.embedFullPageScreenshot(`💥 "${element.description}" is NOT Disabled - Failure - Screenshot`);
         await this._testInfo.attach(`💥 "${element.description}" is NOT Disabled - Failure`, {
           body: `💥 "${element.description}" is NOT Disabled - Failure`,
           contentType: "text/plain",
@@ -267,13 +285,13 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" is Enabled`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isEnabled(element.selector);
       if (booleanFlag) {
-        await this.embedScreenshot(`✅ "${element.description}" is Enabled as Expected - Screenshot`);
+        await this.embedFullPageScreenshot(`✅ "${element.description}" is Enabled as Expected - Screenshot`);
         await this._testInfo.attach(`✅ "${element.description}" is Enabled as Expected`, {
           body: `✅ "${element.description}" is Enabled as Expected`,
           contentType: "text/plain",
         });
       } else {
-        await this.embedScreenshot(`💥 "${element.description}" is NOT Enabled - Failure - Screenshot`);
+        await this.embedFullPageScreenshot(`💥 "${element.description}" is NOT Enabled - Failure - Screenshot`);
         await this._testInfo.attach(`💥 "${element.description}" is NOT Enabled - Failure`, {
           body: `💥 "${element.description}" is NOT Enabled - Failure`,
           contentType: "text/plain",
@@ -283,13 +301,11 @@ export class PlaywrightFactory {
     });
   }
 
-  public async verifySnapshot(filePath: string, elementName: string, screenshotPath: string): Promise<void> {
+  public async verifySnapshot(filePath: string, elementName: string, screenshotPath: any): Promise<void> {
     const element: any = await this.getElement(filePath, elementName);
-    await expect.soft(this._page.locator(element.selector)).toHaveScreenshot(screenshotPath);
-    const screenshot = await this._page.locator(element.selector).screenshot();
-    await this._testInfo.attach("Actual Screenshot - Visual Validation", {
-      body: screenshot,
-      contentType: "image/jpg",
+    await test.step(`🧪 Verifying visual validation of "${element.description}"`, async (): Promise<void> => {
+      await expect.soft(this._page.locator(element.selector)).toHaveScreenshot(screenshotPath);
+      await this.embedElementScreenshot(filePath, elementName, "Actual Screenshot - Visual Validation");
     });
   }
 
@@ -298,13 +314,13 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" is Checked`, async (): Promise<void> => {
       const booleanFlag: Boolean = await this._page.isChecked(element.selector);
       if (booleanFlag) {
-        await this.embedScreenshot(`✅ "${element.description}" is Checked as Expected - Screenshot`);
+        await this.embedFullPageScreenshot(`✅ "${element.description}" is Checked as Expected - Screenshot`);
         await this._testInfo.attach(`✅ "${element.description}" is Checked as Expected`, {
           body: `✅ "${element.description}" is Checked as Expected`,
           contentType: "text/plain",
         });
       } else {
-        await this.embedScreenshot(`💥 "${element.description}" is NOT Checked - Failure`);
+        await this.embedFullPageScreenshot(`💥 "${element.description}" is NOT Checked - Failure`);
         await this._testInfo.attach(`💥 "${element.description}" is NOT Checked - Failure`, {
           body: `💥 "${element.description}" is NOT Checked - Failure`,
           contentType: "text/plain",
@@ -318,7 +334,7 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying that the user is in the url "${expectedURL}"`, async (): Promise<void> => {
       const actualUrl = this._page.url();
       if (actualUrl == expectedURL) {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `✅ "URL page is as Expected = "${expectedURL}" ; Actual = "${actualUrl}" - Screenshot`
         );
         await this._testInfo.attach(`✅ "URL page is as Expected = "${expectedURL}" ; Actual = "${actualUrl}"`, {
@@ -326,7 +342,7 @@ export class PlaywrightFactory {
           contentType: "text/plain",
         });
       } else {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `💥 "URL page is NOT as Expected = "${expectedURL}" ; Actual = "${actualUrl}" - Screenshot`
         );
         await this._testInfo.attach(`💥 "URL page is NOT. Expected = "${expectedURL}" ; Actual = "${actualUrl}"`, {
@@ -372,7 +388,7 @@ export class PlaywrightFactory {
     const expectedValue = JSON.stringify(strExpectedValue, null, 2);
     await test.step(`🧪 Verifying that ${actualValue} match with ${expectedValue}`, async (): Promise<void> => {
       if (actualValue == expectedValue) {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}" - Screenshot`
         );
         await this._testInfo.attach(
@@ -383,7 +399,7 @@ export class PlaywrightFactory {
           }
         );
       } else {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `💥 "Value is NOT displayed. Expected = "${expectedValue}" ; Actual = "${actualValue}" - Screenshot`
         );
         await this._testInfo.attach(
@@ -403,7 +419,7 @@ export class PlaywrightFactory {
     await test.step(`🧪 Verifying if "${element.description}" text is displayed as expected`, async (): Promise<void> => {
       const actualText: string | null = await this.getText(filePath, elementName);
       if (actualText?.includes(strExpectedText)) {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `✅ "${element.description}" text is displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
         );
         await this._testInfo.attach(
@@ -414,7 +430,7 @@ export class PlaywrightFactory {
           }
         );
       } else {
-        await this.embedScreenshot(
+        await this.embedFullPageScreenshot(
           `💥 "${element.description}" text is NOT displayed as Expected = "${strExpectedText}" ; Actual = "${actualText}" - Screenshot`
         );
         await this._testInfo.attach(

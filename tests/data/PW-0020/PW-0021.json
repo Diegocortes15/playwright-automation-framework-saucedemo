@@ -1,0 +1,10 @@
+{
+  "testCase": "PW-0021",
+  "testSummary": "Verify login UI",
+  "testDescription": " Verify login user interface",
+  "tags": "@visual-validation @sprint3 @pw-0020 @pw-0021",
+  "loginPage": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  }
+}

@@ -48,7 +48,7 @@ export class LoginPageMethods {
   public async login({username, password}): Promise<void> {
     await this.enterUsername({username});
     await this.enterPassword({password});
-    await this._playwrightFactory.embedScreenshot("Login - Screenshot");
+    await this._playwrightFactory.embedFullPageScreenshot("Login - Screenshot");
     await this.clickButtonSubmit();
   }
 
@@ -58,5 +58,9 @@ export class LoginPageMethods {
 
   public async verifyValidationMessage({validationMessage}) {
     await this._playwrightFactory.verifyText(this._pageName, "errorMessage", validationMessage);
+  }
+
+  public async verifyLoginView({testCase}) {
+    await this._playwrightFactory.verifySnapshot(this._pageName, "loginContainer", [testCase, "loginContainer.png"]);
   }
 }

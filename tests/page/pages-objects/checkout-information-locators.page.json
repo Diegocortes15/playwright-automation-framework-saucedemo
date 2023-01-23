@@ -1,5 +1,10 @@
 {
   "locators": {
+    "checkoutInformationContainer": {
+      "selector": "#checkout_info_container",
+      "description": "Checkout information container"
+    },
+
     "pageTitle": {
       "selector": ".title",
       "description": "Page title"
