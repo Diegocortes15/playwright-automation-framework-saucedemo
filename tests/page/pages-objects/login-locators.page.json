@@ -1,5 +1,9 @@
 {
   "locators": {
+    "loginContainer": {
+      "selector": "#root",
+      "description": "Login container"
+    },
     "inputUser": {
       "selector": "#user-name[type=text]",
       "description": "Input user"

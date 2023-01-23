@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Playwright framework - case study",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "update-screenshots": "npx playwright test -g \"@visual-validation\" --update-snapshots",
+    "regression-tests": "npx playwright test -g \"@regression\""
+  },
   "author": "Diego Alejandro Cortes Roa",
   "license": "ISC",
   "devDependencies": {
