@@ -63,8 +63,6 @@ git clone https://github.com/Diegocortes15/playwright-automation-framework-sauce
 
 ![openTerminal](https://user-images.githubusercontent.com/60171460/157498798-253494f2-abc8-4764-a343-3cb8e37acdc9.gif)
 
-Type the following commands to run the following test cases
-
 - Type `npm install` and wait all packages will be downloaded
 
 ```bash
