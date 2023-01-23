@@ -133,6 +133,14 @@ npx playwright test -g "@pw-0003"
 
 #### 👀 Run test cases by visual validation 👀
 
+1. Update snapshots
+
+```bash
+npx playwright test -g "@visual-validation" --update-snapshots
+```
+
+2. Run tests
+
 ```bash
 npx playwright test -g "@visual-validation"
 ```
