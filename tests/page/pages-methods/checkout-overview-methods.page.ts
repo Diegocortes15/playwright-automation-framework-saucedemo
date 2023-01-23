@@ -1,7 +1,7 @@
 import {Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
 
-export class CheckoutStepTwoPageMethods {
+export class CheckoutOverviewPageMethods {
   private readonly _page: Page;
   private readonly _testInfo: TestInfo;
   private readonly _playwrightFactory: PlaywrightFactory;
@@ -16,7 +16,7 @@ export class CheckoutStepTwoPageMethods {
     this._page = page;
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
-    this._pageName = "checkout-steptwo-locators.page";
+    this._pageName = "checkout-overview-locators.page";
   }
 
   public async clickButtonFinish(): Promise<void> {

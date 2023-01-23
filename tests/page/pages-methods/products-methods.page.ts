@@ -79,7 +79,7 @@ export class ProductsPageMethods {
       });
       await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", index);
     }
-    await this._playwrightFactory.embedScreenshot("Products added");
+    await this._playwrightFactory.embedFullPageScreenshot("Products added");
   }
 
   public async getItemsAdded(): Promise<{itemName: string | null; price: string | null}[]> {
@@ -93,7 +93,7 @@ export class ProductsPageMethods {
       reformatProductName.includes(productName.toLowerCase())
     );
     await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", indexProduct);
-    await this._playwrightFactory.embedScreenshot(addProduct);
+    await this._playwrightFactory.embedFullPageScreenshot(addProduct);
     this.itemsAdded.push({
       itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
       price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
