@@ -158,4 +158,3 @@ npx playwright show-report
 ```
 
 ![Animation 3 (1)](https://user-images.githubusercontent.com/60171460/214774348-c9d8b4c2-6597-4abc-9ecb-bbd238e95987.gif)
-

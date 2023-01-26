@@ -1,7 +1,7 @@
 {
   "testCase": "PW-0019",
   "testSummary": "Complete a purchase",
-  "testDescription": " Validate the user navigates to the order confirmation page",
+  "testDescription": " Validate the user navigates to the order confirmation page with random checkout information data",
   "tags": "@regression @sprint3 @pw-0018 @pw-0019",
   "loginPage": {
     "username": "standard_user",
