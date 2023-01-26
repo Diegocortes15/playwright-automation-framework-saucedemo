@@ -63,8 +63,6 @@ git clone https://github.com/Diegocortes15/playwright-automation-framework-sauce
 
 ![openTerminal](https://user-images.githubusercontent.com/60171460/157498798-253494f2-abc8-4764-a343-3cb8e37acdc9.gif)
 
-Type the following commands to run the following test cases
-
 - Type `npm install` and wait all packages will be downloaded
 
 ```bash
@@ -159,4 +157,4 @@ npx playwright test -g "@accessibility-testing"
 npx playwright show-report
 ```
 
-![image](https://user-images.githubusercontent.com/60171460/212830486-6d792d27-4bf3-46d0-affa-d55f6434e129.png)
+![Animation 3 (1)](https://user-images.githubusercontent.com/60171460/214774348-c9d8b4c2-6597-4abc-9ecb-bbd238e95987.gif)
