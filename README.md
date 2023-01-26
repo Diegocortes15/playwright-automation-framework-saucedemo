@@ -157,5 +157,5 @@ npx playwright test -g "@accessibility-testing"
 npx playwright show-report
 ```
 
-![Animation 2 (1)](https://user-images.githubusercontent.com/60171460/214769983-03b636af-0741-46f4-9abb-a0ac8cd9b809.gif)
+![Animation 3 (1)](https://user-images.githubusercontent.com/60171460/214774348-c9d8b4c2-6597-4abc-9ecb-bbd238e95987.gif)
 
