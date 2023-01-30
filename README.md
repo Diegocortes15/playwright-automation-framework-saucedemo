@@ -1,6 +1,6 @@
 # Playwright Automation Framework Saucedemo
 
-## Tutorial to run the project
+## Dependencies used
 
 - Playwright
 - Casual
