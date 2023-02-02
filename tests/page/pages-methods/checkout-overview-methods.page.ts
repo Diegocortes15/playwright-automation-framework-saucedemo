@@ -1,4 +1,4 @@
-import {Page, TestInfo} from "@playwright/test";
+import {test, Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
 
 export class CheckoutOverviewPageMethods {
@@ -20,6 +20,8 @@ export class CheckoutOverviewPageMethods {
   }
 
   public async clickButtonFinish(): Promise<void> {
-    await this._playwrightFactory.click(this._pageName, "buttonFinish");
+    await test.step("⏩ Click on finish button", async (): Promise<void> => {
+      await this._playwrightFactory.click(this._pageName, "buttonFinish");
+    });
   }
 }

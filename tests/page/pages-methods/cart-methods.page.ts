@@ -1,4 +1,4 @@
-import {Page, TestInfo} from "@playwright/test";
+import {test, Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
 import {SupportFactory} from "../../utils/support-factory.utils";
 
@@ -25,26 +25,32 @@ export class CartPageMethods {
   }
 
   public async clickCheckoutButton(): Promise<void> {
-    await this._playwrightFactory.click(this._pageName, "buttonCheckout");
+    await test.step("⏩ Click on checkout button", async (): Promise<void> => {
+      await this._playwrightFactory.click(this._pageName, "buttonCheckout");
+    });
   }
 
   public async getCartProducts(): Promise<string> {
-    const products: {itemName: string | null; price: string | null}[] = [];
-    const productListLenght = await (
-      await this._playwrightFactory.getElementSelector(this._pageName, "itemCartList")
-    ).count();
-    for (let index = 0; index < productListLenght; index++) {
-      products.push({
-        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
-        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
-      });
-    }
-    this.cartItemsAdded = await this._supportFactory.jsonToString(products);
-    return this.cartItemsAdded;
+    return await test.step("⏩ Get cart products", async (): Promise<string> => {
+      const products: {itemName: string | null; price: string | null}[] = [];
+      const productListLenght = await (
+        await this._playwrightFactory.getElementSelector(this._pageName, "itemCartList")
+      ).count();
+      for (let index = 0; index < productListLenght; index++) {
+        products.push({
+          itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
+          price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
+        });
+      }
+      this.cartItemsAdded = await this._supportFactory.jsonToString(products);
+      return this.cartItemsAdded;
+    });
   }
 
   async verifyProductsAdded(expectedProductsAdded: string) {
-    const products = await this.getCartProducts();
-    await this._playwrightFactory.verifyCompareValues(products, expectedProductsAdded);
+    await test.step(`🧪 Verify products added ${expectedProductsAdded}`, async (): Promise<void> => {
+      const products = await this.getCartProducts();
+      await this._playwrightFactory.verifyCompareValues(products, expectedProductsAdded);
+    });
   }
 }

@@ -1,4 +1,4 @@
-import {Page, TestInfo} from "@playwright/test";
+import {test, Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../../utils/playwright-factory.utils";
 
 export class HeaderComponentMethods {
@@ -20,23 +20,33 @@ export class HeaderComponentMethods {
   }
 
   async clickBurgerButton(): Promise<void> {
-    await this._playwrightFactory.click(this._pageName, "burgerButton");
+    await test.step("⏩ Click on burger button", async (): Promise<void> => {
+      await this._playwrightFactory.click(this._pageName, "burgerButton");
+    });
   }
 
   async openNavList(): Promise<void> {
-    await this._playwrightFactory.click(this._pageName, "navList");
+    await test.step("⏩ Open navigation list", async (): Promise<void> => {
+      await this._playwrightFactory.click(this._pageName, "navList");
+    });
   }
 
   async clickLogoutButton(): Promise<void> {
-    await this._playwrightFactory.click(this._pageName, "logoutButton");
+    await test.step("⏩ Click on logout button", async (): Promise<void> => {
+      await this._playwrightFactory.click(this._pageName, "logoutButton");
+    });
   }
 
   async clickShoppingCartButton(): Promise<void> {
-    await this._playwrightFactory.click(this._pageName, "shoppingCartButton");
+    await test.step("⏩ Click on shopping cart button", async (): Promise<void> => {
+      await this._playwrightFactory.click(this._pageName, "shoppingCartButton");
+    });
   }
 
   async logout(): Promise<void> {
-    this.clickBurgerButton();
-    this.clickLogoutButton();
+    await test.step("⏩ Logout", async (): Promise<void> => {
+      this.clickBurgerButton();
+      this.clickLogoutButton();
+    });
   }
 }

@@ -1,4 +1,4 @@
-import {Page, TestInfo} from "@playwright/test";
+import {test, Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
 
 export class CheckoutCompletePageMethods {
@@ -20,6 +20,8 @@ export class CheckoutCompletePageMethods {
   }
 
   public async verifyCurrentPage({titlePage: expectedTitlePage}) {
-    await this._playwrightFactory.verifyText(this._pageName, "pageTitle", expectedTitlePage);
+    await test.step(`🧪 Verify current page title: ${expectedTitlePage}`, async (): Promise<void> => {
+      await this._playwrightFactory.verifyText(this._pageName, "pageTitle", expectedTitlePage);
+    });
   }
 }
