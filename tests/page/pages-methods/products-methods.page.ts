@@ -7,11 +7,11 @@ export class ProductsPageMethods {
   private readonly _page: Page;
   private readonly _testInfo: TestInfo;
   private readonly _playwrightFactory: PlaywrightFactory;
-  private readonly _SupportFactory: SupportFactory;
+  private readonly _supportFactory: SupportFactory;
   private readonly _headerComponent: HeaderComponentMethods;
   private readonly _pageName: string;
   private _indexProductsToAdd: number[];
-  public itemsAdded: {itemName: string | null; price: string | null}[];
+  private itemsAdded: string;
 
   /**
    * @param {import('@playwright/test').Page} page
@@ -22,10 +22,10 @@ export class ProductsPageMethods {
     this._page = page;
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
-    this._SupportFactory = new SupportFactory(this._page, this._testInfo);
+    this._supportFactory = new SupportFactory(this._page, this._testInfo);
     this._headerComponent = new HeaderComponentMethods(this._page, this._testInfo);
     this._pageName = "products-locators.page";
-    this.itemsAdded = [];
+    //this.itemsAdded = ;
   }
 
   public get getHeaderComponent(): HeaderComponentMethods {
@@ -49,54 +49,61 @@ export class ProductsPageMethods {
     await this._playwrightFactory.selectByVisibleText(this._pageName, "dropdownProductSort", sortProducts);
   }
 
-  public async sortPricesNotSortedLowToHigh(): Promise<string[]> {
+  public async expectedSortPriceLowToHigh(): Promise<string[]> {
     const orderedPrices = (await this.getPrices()).flat().sort((a: string, b: string) => +a - +b);
     return orderedPrices;
   }
 
   public async verifyPricesOrdered(actualPrices: string[], expectedPrices: string[]): Promise<any> {
-    await this._playwrightFactory.verifyCompareValues(actualPrices, expectedPrices);
+    await this._playwrightFactory.verifyCompareValues(
+      JSON.stringify(actualPrices, null, 2),
+      JSON.stringify(expectedPrices, null, 2)
+    );
   }
 
   public async productsRandomToAdd(): Promise<void> {
-    const productListLenght = await (
+    const productListLength = await (
       await this._playwrightFactory.getElementSelector(this._pageName, "itemList")
     ).count();
 
     const newIndexProductList = new Set<number>();
-    for (let index: number = 0; index < productListLenght; index++) {
-      newIndexProductList.add(await this._SupportFactory.getRandomPositiveNumber(productListLenght));
+    for (let index: number = 0; index < productListLength; index++) {
+      newIndexProductList.add(await this._supportFactory.getRandomPositiveNumber(productListLength));
     }
     this._indexProductsToAdd = [...newIndexProductList];
   }
 
   public async addProducts(): Promise<void> {
     await this.productsRandomToAdd();
+    const products: {itemName: string | null; price: string | null}[] = [];
     for (const index of this._indexProductsToAdd) {
-      this.itemsAdded.push({
+      products.push({
         itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
         price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
       });
       await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", index);
     }
+    this.itemsAdded = await this._supportFactory.jsonToString(products);
     await this._playwrightFactory.embedFullPageScreenshot("Products added");
   }
 
-  public async getItemsAdded(): Promise<{itemName: string | null; price: string | null}[]> {
+  public async getItemsAdded(): Promise<string> {
     return this.itemsAdded;
   }
 
   public async addSpecificProduct({addProduct}): Promise<void> {
     const reformatProductName = addProduct.toLowerCase();
     const productList = await this._playwrightFactory.getAllTextContents(this._pageName, "itemNameList");
+    const products: {itemName: string | null; price: string | null}[] = [];
     const indexProduct = productList.findIndex((productName) =>
       reformatProductName.includes(productName.toLowerCase())
     );
     await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", indexProduct);
     await this._playwrightFactory.embedFullPageScreenshot(addProduct);
-    this.itemsAdded.push({
+    products.push({
       itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
       price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
     });
+    this.itemsAdded = await this._supportFactory.jsonToString(products);
   }
 }

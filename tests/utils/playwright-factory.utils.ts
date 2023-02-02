@@ -383,34 +383,32 @@ export class PlaywrightFactory {
     return elementTextContent;
   }
 
-  public async verifyCompareValues(strActualValue: any, strExpectedValue: any): Promise<void> {
-    const actualValue = JSON.stringify(strActualValue, null, 2);
-    const expectedValue = JSON.stringify(strExpectedValue, null, 2);
-    await test.step(`🧪 Verifying that ${actualValue} match with ${expectedValue}`, async (): Promise<void> => {
-      if (actualValue == expectedValue) {
+  public async verifyCompareValues(strActualValue: string, strExpectedValue: string): Promise<void> {
+    await test.step(`🧪 Verifying that ${strActualValue} match with ${strExpectedValue}`, async (): Promise<void> => {
+      if (strActualValue == strExpectedValue) {
         await this.embedFullPageScreenshot(
-          `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}" - Screenshot`
+          `✅ "Value is displayed as Expected = "${strExpectedValue}" ; Actual = "${strActualValue}" - Screenshot`
         );
         await this._testInfo.attach(
-          `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
+          `✅ "Value is displayed as Expected = "${strExpectedValue}" ; Actual = "${strActualValue}"`,
           {
-            body: `✅ "Value is displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
+            body: `✅ "Value is displayed as Expected = "${strExpectedValue}" ; Actual = "${strActualValue}"`,
             contentType: "text/plain",
           }
         );
       } else {
         await this.embedFullPageScreenshot(
-          `💥 "Value is NOT displayed. Expected = "${expectedValue}" ; Actual = "${actualValue}" - Screenshot`
+          `💥 "Value is NOT displayed. Expected = "${strExpectedValue}" ; Actual = "${strActualValue}" - Screenshot`
         );
         await this._testInfo.attach(
-          `💥 "Value is NOT displayed. Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
+          `💥 "Value is NOT displayed. Expected = "${strExpectedValue}" ; Actual = "${strActualValue}"`,
           {
-            body: `💥 "Value is NOT displayed as Expected = "${expectedValue}" ; Actual = "${actualValue}"`,
+            body: `💥 "Value is NOT displayed as Expected = "${strExpectedValue}" ; Actual = "${strActualValue}"`,
             contentType: "text/plain",
           }
         );
       }
-      expect.soft(actualValue).toEqual(expectedValue);
+      expect.soft(strActualValue).toEqual(strExpectedValue);
     });
   }
 

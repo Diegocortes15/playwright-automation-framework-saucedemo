@@ -34,4 +34,9 @@ export class HeaderComponentMethods {
   async clickShoppingCartButton(): Promise<void> {
     await this._playwrightFactory.click(this._pageName, "shoppingCartButton");
   }
+
+  async logout(): Promise<void> {
+    this.clickBurgerButton();
+    this.clickLogoutButton();
+  }
 }

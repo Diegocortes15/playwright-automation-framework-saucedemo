@@ -17,8 +17,7 @@ Tags: ${testDataTestCase_1["tags"]}`, async ({page}) => {
   await supportFactory.addAnnotations(data);
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
-  await productsPageMethods.getHeaderComponent.clickBurgerButton();
-  await productsPageMethods.getHeaderComponent.clickLogoutButton();
+  await productsPageMethods.getHeaderComponent.logout();
   await loginPageMethods.verifyURL();
 });
 
@@ -33,8 +32,7 @@ Tags: ${testDataTestCase_2["tags"]}`, async ({page}) => {
   await supportFactory.addAnnotations(data);
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
-  await productsPageMethods.getHeaderComponent.clickBurgerButton();
-  await productsPageMethods.getHeaderComponent.clickLogoutButton();
+  await productsPageMethods.getHeaderComponent.logout();
   await loginPageMethods.verifyURL();
 });
 
@@ -49,7 +47,6 @@ Tags: ${testDataTestCase_3["tags"]}`, async ({page}) => {
   await supportFactory.addAnnotations(data);
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
-  await productsPageMethods.getHeaderComponent.clickBurgerButton();
-  await productsPageMethods.getHeaderComponent.clickLogoutButton();
+  await productsPageMethods.getHeaderComponent.logout();
   await loginPageMethods.verifyURL();
 });
