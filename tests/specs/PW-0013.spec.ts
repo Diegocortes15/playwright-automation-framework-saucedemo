@@ -17,7 +17,7 @@ Tags: ${testDataTestCase_1["tags"]}`, async ({page}) => {
   await supportFactory.addAnnotations(data);
   await loginPageMethods.goto();
   await loginPageMethods.login(data.loginPage);
-  const expectedPrices = await productsPageMethods.sortPricesNotSortedLowToHigh();
+  const expectedPrices = await productsPageMethods.expectedSortPriceLowToHigh();
   await productsPageMethods.sortProductsByVisibleText(data.productsPage);
   const actualPrices = await productsPageMethods.getPrices();
   await productsPageMethods.verifyPricesOrdered(actualPrices, expectedPrices);

@@ -25,6 +25,10 @@ export class SupportFactory {
     return Math.floor(Math.random() * max);
   }
 
+  async jsonToString(list: any[]): Promise<string> {
+    return JSON.stringify(list, null, 2);
+  }
+
   async getRandomFirstName(): Promise<string> {
     return casual.first_name;
   }
