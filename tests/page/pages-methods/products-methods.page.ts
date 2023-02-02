@@ -1,4 +1,4 @@
-import {Page, TestInfo} from "@playwright/test";
+import {test, Page, TestInfo} from "@playwright/test";
 import {PlaywrightFactory} from "../../utils/playwright-factory.utils";
 import {SupportFactory} from "../../utils/support-factory.utils";
 import {HeaderComponentMethods} from "./components-methods/header.component";
@@ -25,7 +25,6 @@ export class ProductsPageMethods {
     this._supportFactory = new SupportFactory(this._page, this._testInfo);
     this._headerComponent = new HeaderComponentMethods(this._page, this._testInfo);
     this._pageName = "products-locators.page";
-    //this.itemsAdded = ;
   }
 
   public get getHeaderComponent(): HeaderComponentMethods {
@@ -42,11 +41,15 @@ export class ProductsPageMethods {
   }
 
   public async verifyCurrentPage({titlePage: expectedTitlePage}) {
-    await this._playwrightFactory.verifyText(this._pageName, "pageTitle", expectedTitlePage);
+    await test.step(`🧪 Verify current page title: ${expectedTitlePage}`, async (): Promise<void> => {
+      await this._playwrightFactory.verifyText(this._pageName, "pageTitle", expectedTitlePage);
+    });
   }
 
   public async sortProductsByVisibleText({sortProducts}): Promise<any> {
-    await this._playwrightFactory.selectByVisibleText(this._pageName, "dropdownProductSort", sortProducts);
+    await test.step(`⏩ Sort products by visible text: ${sortProducts}`, async (): Promise<void> => {
+      await this._playwrightFactory.selectByVisibleText(this._pageName, "dropdownProductSort", sortProducts);
+    });
   }
 
   public async expectedSortPriceLowToHigh(): Promise<string[]> {
@@ -55,10 +58,12 @@ export class ProductsPageMethods {
   }
 
   public async verifyPricesOrdered(actualPrices: string[], expectedPrices: string[]): Promise<any> {
-    await this._playwrightFactory.verifyCompareValues(
-      JSON.stringify(actualPrices, null, 2),
-      JSON.stringify(expectedPrices, null, 2)
-    );
+    await test.step(`🧪 Verify prices ordered: ${expectedPrices}`, async (): Promise<void> => {
+      await this._playwrightFactory.verifyCompareValues(
+        JSON.stringify(actualPrices, null, 2),
+        JSON.stringify(expectedPrices, null, 2)
+      );
+    });
   }
 
   public async productsRandomToAdd(): Promise<void> {
@@ -74,17 +79,19 @@ export class ProductsPageMethods {
   }
 
   public async addProducts(): Promise<void> {
-    await this.productsRandomToAdd();
-    const products: {itemName: string | null; price: string | null}[] = [];
-    for (const index of this._indexProductsToAdd) {
-      products.push({
-        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
-        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
-      });
-      await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", index);
-    }
-    this.itemsAdded = await this._supportFactory.jsonToString(products);
-    await this._playwrightFactory.embedFullPageScreenshot("Products added");
+    await test.step("⏩ Add products", async (): Promise<void> => {
+      await this.productsRandomToAdd();
+      const products: {itemName: string | null; price: string | null}[] = [];
+      for (const index of this._indexProductsToAdd) {
+        products.push({
+          itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", index),
+          price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", index),
+        });
+        await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", index);
+      }
+      this.itemsAdded = await this._supportFactory.jsonToString(products);
+      await this._playwrightFactory.embedFullPageScreenshot("Products added");
+    });
   }
 
   public async getItemsAdded(): Promise<string> {
@@ -92,18 +99,20 @@ export class ProductsPageMethods {
   }
 
   public async addSpecificProduct({addProduct}): Promise<void> {
-    const reformatProductName = addProduct.toLowerCase();
-    const productList = await this._playwrightFactory.getAllTextContents(this._pageName, "itemNameList");
-    const products: {itemName: string | null; price: string | null}[] = [];
-    const indexProduct = productList.findIndex((productName) =>
-      reformatProductName.includes(productName.toLowerCase())
-    );
-    await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", indexProduct);
-    await this._playwrightFactory.embedFullPageScreenshot(addProduct);
-    products.push({
-      itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
-      price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
+    await test.step(`⏩ Add product: ${addProduct}`, async (): Promise<void> => {
+      const reformatProductName = addProduct.toLowerCase();
+      const productList = await this._playwrightFactory.getAllTextContents(this._pageName, "itemNameList");
+      const products: {itemName: string | null; price: string | null}[] = [];
+      const indexProduct = productList.findIndex((productName) =>
+        reformatProductName.includes(productName.toLowerCase())
+      );
+      await this._playwrightFactory.clickByIndex(this._pageName, "itemBtn", indexProduct);
+      await this._playwrightFactory.embedFullPageScreenshot(addProduct);
+      products.push({
+        itemName: await this._playwrightFactory.getTextByIndex(this._pageName, "itemName", indexProduct),
+        price: await this._playwrightFactory.getTextByIndex(this._pageName, "itemPrice", indexProduct),
+      });
+      this.itemsAdded = await this._supportFactory.jsonToString(products);
     });
-    this.itemsAdded = await this._supportFactory.jsonToString(products);
   }
 }
