@@ -18,7 +18,7 @@ export class LoginPageMethods {
     this._testInfo = testInfo;
     this._playwrightFactory = new PlaywrightFactory(this._page, this._testInfo);
     this._pageName = "login-locators.page";
-    this._url = "https://www.saucedemo.com";
+    this._url = "https://www.saucedemo.com/";
   }
 
   public async goto(): Promise<void> {

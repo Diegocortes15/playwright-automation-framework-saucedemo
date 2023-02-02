@@ -332,6 +332,7 @@ export class PlaywrightFactory {
 
   public async verifyURL(expectedURL: string) {
     await test.step(`🧪 Verifying that the user is in the url "${expectedURL}"`, async (): Promise<void> => {
+      await this._page.waitForURL(expectedURL);
       const actualUrl = this._page.url();
       if (actualUrl == expectedURL) {
         await this.embedFullPageScreenshot(
